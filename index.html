@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Indian Market — Online Shopping</title>
+<style>
+:root{--gold:#d4af37;--dark:#111;--cream:#fffaf0;--muted:#666}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--cream);color:#171717}
+header{background:#111;color:#fff;padding:18px 5%;display:flex;align-items:center;gap:25px;position:sticky;top:0;z-index:5}
+.logo{font-size:25px;font-weight:800;color:var(--gold);white-space:nowrap}.search{flex:1;max-width:650px}
+.search input{width:100%;padding:13px 17px;border:0;border-radius:25px;font-size:15px}
+.cart{font-size:15px;white-space:nowrap}
+.hero{padding:60px 5%;background:linear-gradient(115deg,#111 0%,#28200c 55%,#d4af37 150%);color:white}
+.hero h1{font-size:clamp(38px,6vw,68px);margin:0 0 10px}.hero p{font-size:18px;color:#eee;max-width:600px}.gold{color:var(--gold)}
+.btn{display:inline-block;background:var(--gold);color:#111;padding:13px 20px;border-radius:8px;text-decoration:none;font-weight:700;border:0;cursor:pointer}
+.container{width:90%;max-width:1200px;margin:35px auto}
+h2{font-size:28px}.categories{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px}
+.cat{background:white;border:1px solid #eadfbd;border-radius:14px;padding:22px;text-align:center;font-weight:700;cursor:pointer;box-shadow:0 4px 15px #0000000b}
+.cat span{display:block;font-size:35px;margin-bottom:8px}
+.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:20px}
+.card{background:white;border-radius:16px;overflow:hidden;box-shadow:0 5px 20px #00000012;border:1px solid #eee}
+.pic{height:190px;background:linear-gradient(135deg,#eee,#d4af37);display:flex;align-items:center;justify-content:center;font-size:65px}
+.info{padding:16px}.info h3{margin:0 0 8px}.price{font-size:21px;font-weight:800}.old{text-decoration:line-through;color:#999;font-size:14px;margin-left:7px}.source{font-size:12px;color:var(--muted);margin:8px 0 13px}
+footer{background:#111;color:#ddd;padding:30px 5%;margin-top:50px;text-align:center}.footer-brand{color:var(--gold);font-weight:800;font-size:22px}
+@media(max-width:650px){header{flex-wrap:wrap;gap:12px}.search{order:3;flex-basis:100%}.hero{padding:45px 5%}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">INDIAN MARKET</div>
+  <div class="search"><input id="search" placeholder="Search products..." oninput="filterProducts()"></div>
+  <div class="cart">🛒 Cart <b id="count">0</b></div>
+</header>
+
+<section class="hero">
+  <h1>Shop Smart.<br><span class="gold">Shop Indian Market.</span></h1>
+  <p>Fashion, mobile accessories, home products and more — all in one place.</p>
+  <a class="btn" href="#products">Explore Products</a>
+</section>
+
+<main class="container">
+<h2>Shop by Category</h2>
+<div class="categories">
+  <div class="cat" onclick="choose('Clothing')"><span>👕</span>Clothing</div>
+  <div class="cat" onclick="choose('Mobile')"><span>📱</span>Mobile Accessories</div>
+  <div class="cat" onclick="choose('Home')"><span>🏠</span>Home Products</div>
+  <div class="cat" onclick="choose('All')"><span>🛍️</span>All Products</div>
+</div>
+
+<h2 id="products">Popular Products</h2>
+<div class="products" id="grid"></div>
+</main>
+
+<footer><div class="footer-brand">INDIAN MARKET</div><p>© 2026 Indian Market • Affiliate shopping demo</p></footer>
+
+<script>
+const items=[
+ {name:"Premium Casual Shirt",cat:"Clothing",price:"₹799",old:"₹1,299",icon:"👔",site:"Amazon",link:"#"},
+ {name:"Stylish Cotton T-Shirt",cat:"Clothing",price:"₹499",old:"₹899",icon:"👕",site:"Flipkart",link:"#"},
+ {name:"Wireless Earbuds",cat:"Mobile",price:"₹1,299",old:"₹2,499",icon:"🎧",site:"Amazon",link:"#"},
+ {name:"Fast Charging Cable",cat:"Mobile",price:"₹249",old:"₹499",icon:"🔌",site:"Meesho",link:"#"},
+ {name:"LED Desk Lamp",cat:"Home",price:"₹599",old:"₹999",icon:"💡",site:"Flipkart",link:"#"},
+ {name:"Kitchen Storage Set",cat:"Home",price:"₹699",old:"₹1,199",icon:"🍱",site:"Meesho",link:"#"},
+ {name:"Men's Casual Sneakers",cat:"Clothing",price:"₹999",old:"₹1,799",icon:"👟",site:"Amazon",link:"#"},
+ {name:"Smartphone Stand",cat:"Mobile",price:"₹299",old:"₹599",icon:"📱",site:"Flipkart",link:"#"}
+];
+let selected="All", cart=0;
+function render(){
+ const q=document.getElementById("search").value.toLowerCase();
+ const list=items.filter(x=>(selected==="All"||x.cat===selected)&&x.name.toLowerCase().includes(q));
+ document.getElementById("grid").innerHTML=list.map((x,i)=>`
+ <article class="card"><div class="pic">${x.icon}</div><div class="info">
+ <h3>${x.name}</h3><div class="price">${x.price}<span class="old">${x.old}</span></div>
+ <div class="source">Available via ${x.site}</div>
+ <a class="btn" href="${x.link}" onclick="cart++;document.getElementById('count').textContent=cart">Buy Now</a>
+ </div></article>`).join("");
+}
+function choose(c){selected=c;render();document.getElementById("products").scrollIntoView({behavior:"smooth"})}
+function filterProducts(){render()}
+render();
+</script>
+</body>
+</html>
